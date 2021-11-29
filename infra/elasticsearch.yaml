@@ -64,7 +64,7 @@ spec:
                 fieldPath: metadata.name # resolves to elasticsearch-{ordinal}
           - name: cluster.name
             value: elasticsearch-cluster
-          - name: discover.seed_hosts
+          - name: discovery.seed_hosts
             # DNS name for each Pod: <StatefulSet metadata.name-{ordinal}>.<serviceName>.<namespace>.svc.cluster.local
             # Truncated DNS: <StatefulSet metadata.name-{ordinal}>.<serviceName>
             value: "elasticsearch-cluster-0.elasticsearch-svc,elasticsearch-cluster-1.elasticsearch-svc,elasticsearch-cluster-2.elasticsearch-svc"

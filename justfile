@@ -5,7 +5,7 @@ create-namespace:
   kubectl apply -f infra/logging-ns.yaml
 
 create-elasticsearch:
-  kubectl apply -n logging -f infra/elasticsearch.yaml
+  kubectl apply infra/elasticsearch.yaml
 
 get:
   kubectl get all -n logging

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: elasticsearch-svc
+  namespace: logging
 spec:
   selector:
     app: elasticsearch
@@ -16,3 +17,75 @@ spec:
   - name: inter-node
     port: 9300
     targetPort: 9300
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch-cluster
+  namespace: logging
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: elasticsearch-svc
+  # Create at least 3 primary-eligible nodes so that if one fails, the others can still safely form a quorum.
+  # Source: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-voting.html
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
+        ports:
+        - containerPort: 9200
+          name: http-api
+          protocol: TCP
+        - containerPort: 9300
+          name: inter-node
+          protocol: TCP
+        # volumeMounts:
+        # - name: elasticsearch-data # should match volumeClaimTemplates.metadata.name
+        #   mountPath: /usr/share/elasticsearch/data
+        # See required envvars: https://www.elastic.co/guide/en/elasticsearch/reference/7.15/docker.html#docker-compose-file
+        env:
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name # resolves to elasticsearch-{ordinal}
+          - name: cluster.name
+            value: elasticsearch-cluster
+          - name: discover.seed_hosts
+            # DNS name for each Pod: <StatefulSet metadata.name-{ordinal}>.<serviceName>.<namespace>.svc.cluster.local
+            # Truncated DNS: <StatefulSet metadata.name-{ordinal}>.<serviceName>
+            value: "elasticsearch-cluster-0.elasticsearch-svc,elasticsearch-cluster-1.elasticsearch-svc,elasticsearch-cluster-2.elasticsearch-svc"
+            # The initial master nodes should be identified by their node.name, which we defined above.
+            # See: https://www.elastic.co/guide/en/elasticsearch/reference/7.9/discovery-settings.html#CO15-1
+          - name: cluster.initial_master_nodes
+            value: "elasticsearch-cluster-0,elasticsearch-cluster-1,elasticsearch-cluster-2"
+          - name: bootstrap.memory_lock
+            value: "true"
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx512m"
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: elasticsearch-data
+  #     labels:
+  #       app: elasticsearch
+  #   spec:
+  #     # storageClassName: do-block-storage
+  #     storageClassName: local-storage
+  #     accessModes:
+  #       - ReadWriteOnce
+  #     resources:
+  #       requests:
+  #         storage: 1Gi

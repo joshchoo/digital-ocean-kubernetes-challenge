@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: elasticsearch-ingress
+  namespace: logging
+  labels:
+    name: elasticsearch-ingress
+spec:
+  rules:
+  - host: kube.xyz
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: elasticsearch-svc
+            port:
+              number: 9200

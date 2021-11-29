@@ -53,9 +53,9 @@ spec:
         - containerPort: 9300
           name: inter-node
           protocol: TCP
-        # volumeMounts:
-        # - name: elasticsearch-data # should match volumeClaimTemplates.metadata.name
-        #   mountPath: /usr/share/elasticsearch/data
+        volumeMounts:
+        - name: elasticsearch-data # should match volumeClaimTemplates.metadata.name
+          mountPath: /usr/share/elasticsearch/data
         # See required envvars: https://www.elastic.co/guide/en/elasticsearch/reference/7.15/docker.html#docker-compose-file
         env:
           - name: node.name
@@ -76,6 +76,11 @@ spec:
             value: "true"
           - name: ES_JAVA_OPTS
             value: "-Xms512m -Xmx512m"
+      volumes:
+        - name: elasticsearch-data
+          hostPath:
+            path: /var/tmp/elasticsearch-data
+            type: DirectoryOrCreate
   # volumeClaimTemplates:
   # - metadata:
   #     name: elasticsearch-data

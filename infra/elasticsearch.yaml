@@ -17,9 +17,7 @@ spec:
   - name: inter-node
     port: 9300
     targetPort: 9300
-
 ---
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -89,9 +87,11 @@ spec:
           privileged: true
       volumes:
         - name: elasticsearch-data
-          hostPath:
-            path: /var/tmp/elasticsearch-data
-            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: elasticsearch-pvc
+          # hostPath:
+          #   path: /var/tmp/elasticsearch-data
+          #   type: DirectoryOrCreate
   # volumeClaimTemplates:
   # - metadata:
   #     name: elasticsearch-data

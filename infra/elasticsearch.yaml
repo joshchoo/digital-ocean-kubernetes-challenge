@@ -78,6 +78,15 @@ spec:
           - name: "node.max_local_storage_nodes"
             value: "3"
       initContainers:
+      # https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
       # Elasticsearch demands at least vm.max_map_count 262144 compared to the default 65530
       # Related: https://stackoverflow.com/questions/51445846/elasticsearch-max-virtual-memory-areas-vm-max-map-count-65530-is-too-low-inc
       - name: increase-vm-max-map-count

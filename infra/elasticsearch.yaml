@@ -72,8 +72,9 @@ spec:
             # See: https://www.elastic.co/guide/en/elasticsearch/reference/7.9/discovery-settings.html#CO15-1
           - name: cluster.initial_master_nodes
             value: "elasticsearch-cluster-0,elasticsearch-cluster-1,elasticsearch-cluster-2"
-          - name: bootstrap.memory_lock
-            value: "true"
+          # Disabled bootstrap.memory_lock because of error: "memory locking requested for elasticsearch process but memory is not locked"
+          # - name: bootstrap.memory_lock
+          #   value: "true"
           - name: ES_JAVA_OPTS
             value: "-Xms512m -Xmx512m"
       volumes:

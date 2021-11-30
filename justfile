@@ -22,6 +22,9 @@ ssh:
 check:
   curl kube.xyz
 
+check-state:
+  curl "kube.xyz/_cluster/state?pretty"
+
 port-forward:
   # Forwards from localhost:9200
   kubectl port-forward elasticsearch-cluster-0 9200:9200 -n logging

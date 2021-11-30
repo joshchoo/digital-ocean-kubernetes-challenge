@@ -8,7 +8,7 @@ create-namespace:
   kubectl apply -f infra/logging-ns.yaml
 
 start-elasticsearch:
-  kubectl apply -f infra/elasticsearch.yaml,infra/ingress.yaml
+  kubectl apply -f infra/volumes.yaml,infra/elasticsearch.yaml,infra/ingress.yaml
 
 get:
   kubectl get all -n logging
@@ -21,3 +21,10 @@ ssh:
 
 check:
   curl kube.xyz
+
+rollout:
+  just start-elasticsearch
+  kubectl rollout restart elasticsearch
+
+rollout-status:
+  kubectl rollout status sts/elasticsearch-cluster -n logging

@@ -22,6 +22,10 @@ ssh:
 check:
   curl kube.xyz
 
+port-forward:
+  # Forwards from localhost:9200
+  kubectl port-forward elasticsearch-cluster-0 9200:9200 -n logging
+
 rollout:
   just start-elasticsearch
   kubectl rollout restart elasticsearch

@@ -1,3 +1,4 @@
+# ServiceAccount provides identity for processes that run in a Pod. Used by the DaemonSet
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -23,6 +24,7 @@ rules:
       - list
       - watch
 ---
+# Bind the above ClusterRole permissions to the ServiceAccount
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -52,7 +54,7 @@ spec:
       labels:
         app: fluentd
     spec:
-      serviceAccount: fluentd
+      # Use the fluentd ServiceAccount to run this pod
       serviceAccountName: fluentd
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -75,8 +77,10 @@ spec:
             requests:
               cpu: 100m
               memory: 200Mi
+          # Map the Node's folders onto the Pod's
           volumeMounts:
             - name: varlog
+              # Kubernetes captures stdout/stderr logs from each pod to the Node's /var/log path.
               mountPath: /var/log
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers

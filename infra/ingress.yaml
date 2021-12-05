@@ -9,21 +9,21 @@ metadata:
   #   nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: kube.xyz
-    http:
-      paths:
-      - pathType: Prefix
-        # This should match SERVER_BASEPATH defined in Kibana service
-        path: "/kibana"
-        backend:
-          service:
-            name: kibana
-            port:
-              number: 5601
-      # - pathType: Prefix
-      #   path: "/"
-      #   backend:
-      #     service:
-      #       name: elasticsearch
-      #       port:
-      #         number: 9200
+    - host: kube.xyz
+      http:
+        paths:
+          - pathType: Prefix
+            # This should match SERVER_BASEPATH defined in Kibana service
+            path: "/kibana"
+            backend:
+              service:
+                name: kibana
+                port:
+                  number: 5601
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: elasticsearch
+                port:
+                  number: 9200

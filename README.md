@@ -23,7 +23,36 @@ $ just create-namespace
 $ just start-elasticsearch
 ```
 
-### Executing requests against Elasticsearch
+### Start fluentd
+
+```sh
+$ just start-fluentd
+```
+
+### Start Kibana
+
+```sh
+$ just start-kibana
+```
+
+### Add `kube.xyz` to `/etc/hosts`
+
+```sh
+$ minikube ip
+192.168.49.2
+
+$ sudo echo "192.168.49.2 kube.xyz" >> /etc/hosts
+```
+
+### View Kibana dashboard
+
+Open a browser and visit `http://kube.xyz/kibana`. You should see the Kibana dashboard.
+
+Next, go to the Discover tab in the sidebar and proceed to create a new Index Pattern: `logstash-*` and `@timestamp`.
+
+Proceed back to the Discover tab to see the logs!
+
+## Execute requests against Elasticsearch
 
 Ensure that Ingress is running. Then make a request to `kube.xyz`:
 

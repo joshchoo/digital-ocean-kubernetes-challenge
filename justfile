@@ -10,6 +10,9 @@ create-namespace:
 start-elasticsearch:
   kubectl apply -f infra/volumes.yaml,infra/elasticsearch.yaml,infra/ingress.yaml
 
+start-fluentd:
+  kubectl apply -f infra/fluentd.yaml
+
 start-kibana:
   kubectl apply -f infra/kibana.yaml
 

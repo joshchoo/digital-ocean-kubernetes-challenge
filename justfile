@@ -1,9 +1,19 @@
 default:
   @just --list
 
-deploy-digital-ocean:
-  kubectl apply -f infra/logging-ns.yaml,infra/elasticsearch.yaml,infra/fluentd.yaml,infra/kibana.yaml,counter.yaml
+create-do-cluster:
+  doctl kubernetes cluster create k8s-challenge \
+    --region=sgp1 \
+    --size=s-2vcpu-4gb \
+    --count=3 \
+    --surge-upgrade=false \
+    --wait=false
 
+deploy-do:
+  kubectl apply -f infra/logging-ns.yaml,infra/elasticsearch.yaml,infra/fluentd.yaml,infra/kibana.yaml,infra/counter.yaml
+
+delete-do-cluster:
+  doctl kubernetes cluster delete k8s-challenge
 
 # Scripts for local development:
 

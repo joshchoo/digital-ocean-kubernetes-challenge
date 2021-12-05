@@ -110,4 +110,4 @@ $ curl 172.17.0.2:9200
 
 Create node pools with **at least 2GB RAM per node**. Otherwise, Elasticsearch pods will crash continuously.
 
-I created nodes with 2.5GB RAM and 2 vCPUs ($20/month), which worked well for me.
+I created nodes with 4GB RAM and 2 vCPUs ($20/month), which worked well for me.

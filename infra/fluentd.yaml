@@ -71,6 +71,12 @@ spec:
               value: "http"
             - name: FLUENTD_SYSTEMD_CONF
               value: disable
+              # Fixes logs not being sent to Elasticsearch/Kibana: https://github.com/fluent/fluentd/issues/2545#issuecomment-747488212
+              # Prevent Fluentd from reading its own logs recursively...
+            - name: FLUENT_CONTAINER_TAIL_EXCLUDE_PATH
+              value: /var/log/containers/fluent*
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+              value: /^(?<time>.+) (?<stream>stdout|stderr) [^ ]* (?<log>.*)$/
           resources:
             limits:
               memory: 512Mi

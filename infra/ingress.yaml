@@ -5,15 +5,25 @@ metadata:
   namespace: logging
   labels:
     name: elasticsearch-ingress
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: kube.xyz
     http:
       paths:
       - pathType: Prefix
+        # This should match SERVER_BASEPATH defined in Kibana service
         path: "/"
         backend:
           service:
-            name: elasticsearch
+            name: kibana
             port:
-              number: 9200
+              number: 5601
+      # - pathType: Prefix
+      #   path: "/"
+      #   backend:
+      #     service:
+      #       name: elasticsearch
+      #       port:
+      #         number: 9200

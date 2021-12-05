@@ -10,6 +10,13 @@ create-namespace:
 start-elasticsearch:
   kubectl apply -f infra/volumes.yaml,infra/elasticsearch.yaml,infra/ingress.yaml
 
+start-kibana:
+  kubectl apply -f infra/kibana.yaml
+
+restart-kibana:
+  just start-kibana
+  kubectl rollout restart deployment kibana -n logging
+
 get:
   kubectl get all -n logging
 

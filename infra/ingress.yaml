@@ -14,7 +14,7 @@ spec:
       paths:
       - pathType: Prefix
         # This should match SERVER_BASEPATH defined in Kibana service
-        path: "/"
+        path: "/kibana"
         backend:
           service:
             name: kibana

@@ -38,8 +38,10 @@ spec:
             cpu: 100m
         env:
           # This should match the path specified in the Ingress file
-          # - name: SERVER_BASEPATH
-          #   value: "/kibana"
+          - name: SERVER_BASEPATH
+            value: "/kibana"
+          - name: SERVER_REWRITEBASEPATH
+            value: "true"
           - name: ELASTICSEARCH_HOSTS
             value: http://elasticsearch:9200
           - name: ELASTICSEARCH_URL

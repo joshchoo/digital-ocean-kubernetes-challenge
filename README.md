@@ -105,3 +105,9 @@ elasticsearch-cluster-0   1/1     Running   0          36m   172.17.0.2   miniku
 
 $ curl 172.17.0.2:9200
 ```
+
+## Digital Ocean Gotchas
+
+Create node pools with **at least 2GB RAM per node**. Otherwise, Elasticsearch pods will crash continuously.
+
+I created nodes with 2.5GB RAM and 2 vCPUs ($20/month), which worked well for me.

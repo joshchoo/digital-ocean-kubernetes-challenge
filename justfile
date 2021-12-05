@@ -1,6 +1,12 @@
 default:
   @just --list
 
+deploy-digital-ocean:
+  kubectl apply -f infra/elasticsearch.yaml,infra/fluentd.yaml,infra/kibana.yaml,counter.yaml
+
+
+# Scripts for local development:
+
 enable-ingress:
   minikube addons enable ingress
 

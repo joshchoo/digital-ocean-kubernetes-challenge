@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: elasticsearch-svc
+  name: elasticsearch
   namespace: logging
 spec:
   selector:
@@ -27,7 +27,7 @@ spec:
   selector:
     matchLabels:
       app: elasticsearch
-  serviceName: elasticsearch-svc
+  serviceName: elasticsearch
   # Create at least 3 primary-eligible nodes so that if one fails, the others can still safely form a quorum.
   # Source: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-voting.html
   replicas: 3
@@ -65,7 +65,7 @@ spec:
           - name: discovery.seed_hosts
             # DNS name for each Pod: <StatefulSet metadata.name-{ordinal}>.<serviceName>.<namespace>.svc.cluster.local
             # Truncated DNS: <StatefulSet metadata.name-{ordinal}>.<serviceName>
-            value: "elasticsearch-cluster-0.elasticsearch-svc,elasticsearch-cluster-1.elasticsearch-svc,elasticsearch-cluster-2.elasticsearch-svc"
+            value: "elasticsearch-cluster-0.elasticsearch,elasticsearch-cluster-1.elasticsearch,elasticsearch-cluster-2.elasticsearch"
             # The initial master nodes should be identified by their node.name, which we defined above.
             # See: https://www.elastic.co/guide/en/elasticsearch/reference/7.9/discovery-settings.html#CO15-1
           - name: cluster.initial_master_nodes
@@ -104,8 +104,6 @@ spec:
   # volumeClaimTemplates:
   # - metadata:
   #     name: elasticsearch-data
-  #     labels:
-  #       app: elasticsearch
   #   spec:
   #     # storageClassName: do-block-storage
   #     storageClassName: local-storage

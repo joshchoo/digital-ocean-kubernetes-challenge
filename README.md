@@ -5,7 +5,7 @@
 
 ## Getting Started
 
-### Enable Minikube Ingress
+### [IMPORTANT!] Enable Minikube Ingress
 
 ```sh
 $ minikube addons enable ingress
@@ -60,12 +60,12 @@ Then make requests against the Elasticsearch service:
 
 ```sh
 # Target the service
-$ curl elasticsearch-svc:9200
+$ curl elasticsearch:9200
 ```
 
 ```sh
 # Target a specific Pod by domain name
-$ curl elasticsearch-cluster-0.elasticsearch-svc:9200
+$ curl elasticsearch-cluster-0.elasticsearch:9200
 ```
 
 ```sh

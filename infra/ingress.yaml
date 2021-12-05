@@ -14,6 +14,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: elasticsearch-svc
+            name: elasticsearch
             port:
               number: 9200
